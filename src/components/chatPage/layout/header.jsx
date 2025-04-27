@@ -23,7 +23,7 @@ const Header = ({ toggleSidebar, sidebarOpen }) => {
 
   return (
     <header className="h-14 flex items-center px-2 md:px-4 bg-white dark:bg-dark-header sticky top-0 z-10">
-      {!sidebarOpen && (
+     {!sidebarOpen && (
         <button
           className="mr-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center transition-colors"
           onClick={toggleSidebar}

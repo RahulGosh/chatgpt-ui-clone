@@ -1,36 +1,44 @@
-import { useState } from 'react';
-import ResponseSection from "../components/homePage/responseSection";
-import InputSection from "../components/homePage/inputSection";
+import { useLocation } from 'react-router-dom';
+import CTA from '../components/homePage/cta';
+import FAQ from '../components/homePage/faq';
+import Features from '../components/homePage/features';
+import Hero from '../components/homePage/hero';
+import HowItWorks from '../components/homePage/howItWorks';
+import Footer from '../components/homePage/layout/footer';
+import Header from '../components/homePage/layout/header';
+import Testimonials from '../components/homePage/testimonials';
+import { useTheme } from '../context/themeContext';
+import Contact from './../components/homePage/contact';
+import { useEffect } from 'react';
 
 const HomePage = () => {
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
 
-  const handleSendMessage = (text, imageData = null) => {
-    const newMessages = [...messages, { text, image: imageData, isUser: true }];
-    setMessages(newMessages);
-    setIsLoading(true);
-    
-    setTimeout(() => {
-      setMessages([...newMessages, { 
-        text: imageData 
-          ? `I received your image "${imageData.name}" with your message: "${text}"`
-          : `Here's a response to your query about ${text}. This is a simulated response from the AI assistant.`, 
-        isUser: false 
-      }]);
-      setIsLoading(false);
-    }, 1500);
-  };
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.replace('#', ''));
+      if (element) {
+        // Small timeout to ensure page is loaded
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   return (
-    <div className="h-full flex flex-col lg:flex-row bg-white dark:bg-dark-header transition-colors duration-200">
-      <div className="w-full lg:w-1/2 flex-1 order-1 lg:order-2">
-        <ResponseSection messages={messages} isLoading={isLoading} />
-      </div>
-      
-      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center border-t lg:border-t-0 lg:border-r border-gray-200 dark:border-gray-700 p-4 order-2 lg:order-1">
-        <InputSection onSendMessage={handleSendMessage} />
-      </div>
+    <div className="min-h-screen flex flex-col bg-white dark:bg-dark-header text-light-text dark:text-dark-text">
+      <Header darkMode={darkMode} toggleTheme={toggleTheme} />
+      <Hero id="" />
+      <Features id="features-section" />
+      <HowItWorks />
+      <Testimonials />
+      <FAQ id="faq" />
+      <Contact id="contact" />
+      <CTA />
+      <Footer />
     </div>
   );
 };
